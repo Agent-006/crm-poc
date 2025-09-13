@@ -50,56 +50,56 @@ const inventory = [
   {
     itemId: "ITM001",
     itemName: "Smartphone",
-    itemPrice: 799.99,
+    itemPrice: 79999.99,
     itemInventory: 150,
     totalSold: 500,
   },
   {
     itemId: "ITM002",
     itemName: "Wireless Headphones",
-    itemPrice: 149.5,
+    itemPrice: 1249.5,
     itemInventory: 250,
     totalSold: 1200,
   },
   {
     itemId: "ITM003",
     itemName: "Gaming Mouse",
-    itemPrice: 59.99,
+    itemPrice: 599.99,
     itemInventory: 100,
     totalSold: 850,
   },
   {
     itemId: "ITM004",
     itemName: "External Hard Drive",
-    itemPrice: 85.0,
+    itemPrice: 850.0,
     itemInventory: 75,
     totalSold: 300,
   },
   {
     itemId: "ITM005",
     itemName: "Smartwatch",
-    itemPrice: 199.0,
+    itemPrice: 1999.0,
     itemInventory: 200,
     totalSold: 600,
   },
   {
     itemId: "ITM006",
     itemName: "Portable Charger",
-    itemPrice: 29.99,
+    itemPrice: 299.99,
     itemInventory: 500,
     totalSold: 2500,
   },
   {
     itemId: "ITM007",
     itemName: "Webcam",
-    itemPrice: 45.0,
+    itemPrice: 450.0,
     itemInventory: 120,
     totalSold: 400,
   },
   {
     itemId: "ITM008",
     itemName: "Monitor",
-    itemPrice: 250.75,
+    itemPrice: 2500.75,
     itemInventory: 60,
     totalSold: 200,
   },
@@ -124,13 +124,15 @@ const formSchema = z.object({
 
 const Page = () => {
   const [searchTerm, setSearchTerm] = useState("");
-  const [orderItems, setOrderItems] = useState<Array<{
-    itemId: string;
-    itemName: string;
-    itemPrice: number;
-    quantity: number;
-    amount: number;
-  }>>([]);
+  const [orderItems, setOrderItems] = useState<
+    Array<{
+      itemId: string;
+      itemName: string;
+      itemPrice: number;
+      quantity: number;
+      amount: number;
+    }>
+  >([]);
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -142,26 +144,31 @@ const Page = () => {
   });
 
   // Filter inventory based on search term
-  const filteredInventory = inventory.filter((item) =>
-    item.itemName.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    item.itemId.toLowerCase().includes(searchTerm.toLowerCase())
+  const filteredInventory = inventory.filter(
+    (item) =>
+      item.itemName.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      item.itemId.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
   // Add item to order
-  const addItemToOrder = (item: typeof inventory[0]) => {
-    const existingItem = orderItems.find(orderItem => orderItem.itemId === item.itemId);
-    
+  const addItemToOrder = (item: (typeof inventory)[0]) => {
+    const existingItem = orderItems.find(
+      (orderItem) => orderItem.itemId === item.itemId
+    );
+
     if (existingItem) {
       // If item already exists, increase quantity
-      setOrderItems(orderItems.map(orderItem =>
-        orderItem.itemId === item.itemId
-          ? { 
-              ...orderItem, 
-              quantity: orderItem.quantity + 1,
-              amount: (orderItem.quantity + 1) * orderItem.itemPrice
-            }
-          : orderItem
-      ));
+      setOrderItems(
+        orderItems.map((orderItem) =>
+          orderItem.itemId === item.itemId
+            ? {
+                ...orderItem,
+                quantity: orderItem.quantity + 1,
+                amount: (orderItem.quantity + 1) * orderItem.itemPrice,
+              }
+            : orderItem
+        )
+      );
       toast.success(`Added another ${item.itemName} to order`);
     } else {
       // Add new item to order
@@ -170,7 +177,7 @@ const Page = () => {
         itemName: item.itemName,
         itemPrice: item.itemPrice,
         quantity: 1,
-        amount: item.itemPrice
+        amount: item.itemPrice,
       };
       setOrderItems([...orderItems, newOrderItem]);
       toast.success(`Added ${item.itemName} to order`);
@@ -183,22 +190,26 @@ const Page = () => {
       removeItemFromOrder(itemId);
       return;
     }
-    
-    setOrderItems(orderItems.map(item =>
-      item.itemId === itemId
-        ? { 
-            ...item, 
-            quantity: newQuantity,
-            amount: newQuantity * item.itemPrice
-          }
-        : item
-    ));
+
+    setOrderItems(
+      orderItems.map((item) =>
+        item.itemId === itemId
+          ? {
+              ...item,
+              quantity: newQuantity,
+              amount: newQuantity * item.itemPrice,
+            }
+          : item
+      )
+    );
   };
 
   // Remove item from order
   const removeItemFromOrder = (itemId: string) => {
-    const item = orderItems.find(orderItem => orderItem.itemId === itemId);
-    setOrderItems(orderItems.filter(orderItem => orderItem.itemId !== itemId));
+    const item = orderItems.find((orderItem) => orderItem.itemId === itemId);
+    setOrderItems(
+      orderItems.filter((orderItem) => orderItem.itemId !== itemId)
+    );
     if (item) {
       toast.success(`Removed ${item.itemName} from order`);
     }
@@ -317,9 +328,11 @@ const Page = () => {
                 {/* Inventory Search and Selection */}
                 <div className="space-y-4">
                   <div className="flex items-center gap-4">
-                    <h3 className="text-lg font-semibold">Add Items to Order</h3>
+                    <h3 className="text-lg font-semibold">
+                      Add Items to Order
+                    </h3>
                   </div>
-                  
+
                   {/* Search Bar */}
                   <div className="relative">
                     <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 h-4 w-4" />
@@ -335,7 +348,9 @@ const Page = () => {
                   {searchTerm && (
                     <Card>
                       <CardHeader>
-                        <CardTitle className="text-base">Available Items</CardTitle>
+                        <CardTitle className="text-base">
+                          Available Items
+                        </CardTitle>
                       </CardHeader>
                       <CardContent>
                         <div className="max-h-60 overflow-y-auto">
@@ -359,9 +374,19 @@ const Page = () => {
                                     <TableCell className="max-w-32 truncate overflow-hidden">
                                       {item.itemName}
                                     </TableCell>
-                                    <TableCell>${item.itemPrice.toFixed(2)}</TableCell>
                                     <TableCell>
-                                      <Badge variant={item.itemInventory > 50 ? "default" : item.itemInventory > 10 ? "secondary" : "destructive"}>
+                                      ₹{item.itemPrice.toFixed(2)}
+                                    </TableCell>
+                                    <TableCell>
+                                      <Badge
+                                        variant={
+                                          item.itemInventory > 50
+                                            ? "default"
+                                            : item.itemInventory > 10
+                                            ? "secondary"
+                                            : "destructive"
+                                        }
+                                      >
                                         {item.itemInventory}
                                       </Badge>
                                     </TableCell>
@@ -379,7 +404,10 @@ const Page = () => {
                                 ))
                               ) : (
                                 <TableRow>
-                                  <TableCell colSpan={5} className="text-center text-gray-500">
+                                  <TableCell
+                                    colSpan={5}
+                                    className="text-center text-gray-500"
+                                  >
                                     No items found matching "{searchTerm}"
                                   </TableCell>
                                 </TableRow>
@@ -419,37 +447,53 @@ const Page = () => {
                                   <TableCell className="max-w-32 truncate overflow-hidden">
                                     {item.itemName}
                                   </TableCell>
-                                  <TableCell>${item.itemPrice.toFixed(2)}</TableCell>
+                                  <TableCell>
+                                    ₹{item.itemPrice.toFixed(2)}
+                                  </TableCell>
                                   <TableCell>
                                     <div className="flex items-center gap-2">
                                       <Button
                                         type="button"
                                         size="sm"
                                         variant="outline"
-                                        onClick={() => updateQuantity(item.itemId, item.quantity - 1)}
+                                        onClick={() =>
+                                          updateQuantity(
+                                            item.itemId,
+                                            item.quantity - 1
+                                          )
+                                        }
                                       >
                                         <Minus className="h-3 w-3" />
                                       </Button>
-                                      <span className="w-8 text-center">{item.quantity}</span>
+                                      <span className="w-8 text-center">
+                                        {item.quantity}
+                                      </span>
                                       <Button
                                         type="button"
                                         size="sm"
                                         variant="outline"
-                                        onClick={() => updateQuantity(item.itemId, item.quantity + 1)}
+                                        onClick={() =>
+                                          updateQuantity(
+                                            item.itemId,
+                                            item.quantity + 1
+                                          )
+                                        }
                                       >
                                         <Plus className="h-3 w-3" />
                                       </Button>
                                     </div>
                                   </TableCell>
                                   <TableCell className="font-semibold">
-                                    ${item.amount.toFixed(2)}
+                                    ₹{item.amount.toFixed(2)}
                                   </TableCell>
                                   <TableCell>
                                     <Button
                                       type="button"
                                       size="sm"
                                       variant="destructive"
-                                      onClick={() => removeItemFromOrder(item.itemId)}
+                                      onClick={() =>
+                                        removeItemFromOrder(item.itemId)
+                                      }
                                     >
                                       <Trash2 className="h-3 w-3" />
                                     </Button>
@@ -457,11 +501,14 @@ const Page = () => {
                                 </TableRow>
                               ))}
                               <TableRow>
-                                <TableCell colSpan={4} className="text-right font-semibold">
+                                <TableCell
+                                  colSpan={4}
+                                  className="text-right font-semibold"
+                                >
                                   Total:
                                 </TableCell>
                                 <TableCell className="font-bold text-lg">
-                                  ${totalAmount.toFixed(2)}
+                                  ₹{totalAmount.toFixed(2)}
                                 </TableCell>
                                 <TableCell></TableCell>
                               </TableRow>
