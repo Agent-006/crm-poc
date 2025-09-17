@@ -143,14 +143,12 @@ const Page = () => {
     },
   });
 
-  // Filter inventory based on search term
   const filteredInventory = inventory.filter(
     (item) =>
       item.itemName.toLowerCase().includes(searchTerm.toLowerCase()) ||
       item.itemId.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
-  // Add item to order
   const addItemToOrder = (item: (typeof inventory)[0]) => {
     const existingItem = orderItems.find(
       (orderItem) => orderItem.itemId === item.itemId
