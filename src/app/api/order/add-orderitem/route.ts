@@ -2,6 +2,7 @@ import dbConnect from "@/lib/dbConnect";
 import OrderItem from "@/model/OrderItem.model";
 import { NextResponse } from "next/server";
 
+// This api can be used to list the items in an order
 export async function POST(request: Request) {
 	await dbConnect();
 
