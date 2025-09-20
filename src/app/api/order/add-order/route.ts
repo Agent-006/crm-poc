@@ -4,12 +4,14 @@ import Customer from "@/model/Customer.model";
 import Order from "@/model/Order.model";
 import { NextResponse } from "next/server";
 
+// This api can be used to add a new order and create/find customer along with order
 export async function POST(request: Request) {
 	await dbConnect();
 
 	try {
 		const body = await request.json();
 		const { name, email, phone, order } = body;
+		console.log(name, email, phone, order);
 
 		if (!phone || !order) {
 			return NextResponse.json({ message: "Phone and order details are required." }, { status: 400 });
