@@ -68,7 +68,7 @@ const Page = () => {
           params: { id },
         });
         setOrder(res.data.order);
-      } catch (error) {
+      } catch (error: any) {
         toast.error("Failed to fetch order");
         setOrder(null);
       } finally {

@@ -42,6 +42,7 @@ interface Order {
 
 const Page = () => {
   const { id } = useParams();
+  console.log("customer_id", id);
   const [customer, setCustomer] = useState<Customer | null>(null);
   const [orders, setOrders] = useState<Order[]>([]);
   const [loading, setLoading] = useState(true);
@@ -49,28 +50,19 @@ const Page = () => {
   useEffect(() => {
     const fetchCustomerData = async () => {
       try {
-        // Get all customers and find the one with matching id
-        const customersResponse = await axios.get('/api/customer/get-all-customer');
-        const customersData = customersResponse.data;
+        // Get customer by id using get-customer API
+        const customerResponse = await axios.post('/api/customer/get-customer-by-id', {
+          id
+        });
+        const customerData = customerResponse.data.customer;
+        console.log(customerData);
+        setCustomer(customerData);
 
-        if (customersData.customers) {
-          const foundCustomer = customersData.customers.find((c: Customer) => c._id === id);
-
-          if (foundCustomer) {
-            setCustomer(foundCustomer);
-
-            // Get customer orders using their phone number as query param
-            const ordersResponse = await axios.post('/api/order/get-customer-order', {
-              phone: foundCustomer.phone
-            });
-
-            setOrders(ordersResponse.data.orders || []);
-          } else {
-            toast.error('Customer not found');
-          }
-        } else {
-          toast.error('Failed to fetch customer data');
-        }
+        // Get customer orders using their phone number
+        const ordersResponse = await axios.post('/api/order/get-customer-order', {
+          phone: customerData.phone
+        });
+        setOrders(ordersResponse.data.orders || []);
       } catch (error) {
         console.error('Error fetching customer data:', error);
         toast.error('Failed to fetch customer data');

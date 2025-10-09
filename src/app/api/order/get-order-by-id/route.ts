@@ -8,6 +8,8 @@ export async function GET(request: Request) {
   const { searchParams } = new URL(request.url);
   const id = searchParams.get("id");
 
+  
+
   if (!id) {
     return new NextResponse(
       JSON.stringify({ message: "Order ID is required" }),

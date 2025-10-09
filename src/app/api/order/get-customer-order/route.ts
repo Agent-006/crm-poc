@@ -1,9 +1,10 @@
 import dbConnect from "@/lib/dbConnect";
 import Customer from "@/model/Customer.model";
+import Order from "@/model/Order.model"; // <-- Add this import!
 import { NextResponse } from "next/server";
 
 // This api can be used to list the orders of a customer
-export async function GET(request: Request) {
+export async function POST(request: Request) {
     await dbConnect();
 
     const body = await request.json();
